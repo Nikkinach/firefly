@@ -1,0 +1,665 @@
+/* Global Styles for Firefly Mental Health App */
+/* Color Palette:
+   - Deep Night (Dark Indigo): #0A0F29
+   - Soft Midnight (Navy Purple): #1C2340
+   - Firefly Glow (Warm Yellow): #FCD34D
+   - Ember Accent (Orange-Gold): #F59E0B
+   - Calming Contrast (Mint Teal): #4ADEB7
+   - Neutral Text (Silver): #D1D5DB
+*/
+
+:root {
+  --deep-night: #0A0F29;
+  --soft-midnight: #1C2340;
+  --firefly-glow: #FCD34D;
+  --ember-accent: #F59E0B;
+  --calming-teal: #4ADEB7;
+  --neutral-text: #D1D5DB;
+  --neutral-text-dim: #9CA3AF;
+  --surface-light: #2A3158;
+  --surface-lighter: #3D4573;
+  --card-bg-purple: #252B4D;
+  --navbar-dark: #050816;
+  --twilight-purple: #2A1F4A;
+  --misty-blue: #7A899C;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(252, 211, 77, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(252, 211, 77, 0.6);
+  }
+}
+
+@keyframes fireflyPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    filter: brightness(1);
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    filter: brightness(1.3);
+    transform: scale(1.1) rotate(-5deg);
+  }
+  50% {
+    filter: brightness(1);
+    transform: scale(1) rotate(0deg);
+  }
+  75% {
+    filter: brightness(1.3);
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+/* Utility classes */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.pulse-hover:hover {
+  animation: pulse 0.3s ease-in-out;
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-animation {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.bounce-animation {
+  animation: gentleBounce 2s ease-in-out infinite;
+}
+
+.sparkle-animation {
+  animation: sparkle 3s ease-in-out infinite;
+}
+
+/* Gradient backgrounds with new palette */
+.gradient-primary {
+  background: linear-gradient(135deg, var(--soft-midnight) 0%, var(--deep-night) 100%);
+}
+
+.gradient-firefly {
+  background: linear-gradient(135deg, var(--firefly-glow) 0%, var(--ember-accent) 100%);
+}
+
+.gradient-teal {
+  background: linear-gradient(135deg, var(--calming-teal) 0%, #2DD4BF 100%);
+}
+
+.gradient-midnight {
+  background: linear-gradient(135deg, var(--soft-midnight) 0%, #2A3158 100%);
+}
+
+.gradient-sunset {
+  background: linear-gradient(135deg, var(--ember-accent) 0%, var(--firefly-glow) 100%);
+}
+
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Glass morphism effect - dark theme */
+.glass-card {
+  background: rgba(28, 35, 64, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(252, 211, 77, 0.1);
+  border-radius: 16px;
+}
+
+/* Dark neumorphism */
+.neo-card {
+  background: var(--soft-midnight);
+  border-radius: 20px;
+  box-shadow: 8px 8px 16px #0A0F29, -8px -8px 16px #2A3158;
+}
+
+/* Card hover effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Custom scrollbar - dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--deep-night);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--soft-midnight);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-light);
+}
+
+/* Typography enhancements */
+.text-gradient {
+  background: linear-gradient(135deg, var(--firefly-glow), var(--ember-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(252, 211, 77, 0.5);
+}
+
+/* Mood score colors - adapted */
+.mood-excellent {
+  color: var(--calming-teal);
+}
+
+.mood-good {
+  color: #6EE7B7;
+}
+
+.mood-neutral {
+  color: var(--firefly-glow);
+}
+
+.mood-low {
+  color: var(--ember-accent);
+}
+
+.mood-critical {
+  color: #F87171;
+}
+
+/* Energy level indicator */
+.energy-high {
+  background: linear-gradient(90deg, var(--calming-teal), #6EE7B7);
+}
+
+.energy-medium {
+  background: linear-gradient(90deg, var(--firefly-glow), var(--ember-accent));
+}
+
+.energy-low {
+  background: linear-gradient(90deg, #F87171, #EF4444);
+}
+
+/* Custom button styles */
+.btn-gradient {
+  background: linear-gradient(135deg, var(--firefly-glow) 0%, var(--ember-accent) 100%);
+  border: none;
+  color: var(--deep-night);
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(252, 211, 77, 0.4);
+}
+
+.btn-teal {
+  background: linear-gradient(135deg, var(--calming-teal) 0%, #2DD4BF 100%);
+  border: none;
+  color: var(--deep-night);
+  font-weight: 600;
+}
+
+/* Stat card styling */
+.stat-card {
+  background: var(--soft-midnight);
+  border: 1px solid rgba(252, 211, 77, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-color: rgba(252, 211, 77, 0.3);
+}
+
+/* Emotion tags */
+.emotion-tag {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+  margin: 2px;
+  transition: all 0.2s ease;
+  background: var(--surface-light);
+  color: var(--neutral-text);
+}
+
+.emotion-tag:hover {
+  transform: scale(1.05);
+}
+
+/* Progress ring */
+.progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Insight cards */
+.insight-card {
+  background: var(--soft-midnight);
+  border: 1px solid rgba(252, 211, 77, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.insight-card:hover {
+  transform: translateX(4px);
+  border-color: var(--firefly-glow);
+}
+
+/* Chart container */
+.chart-container {
+  background: var(--soft-midnight);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Hero section - dark theme */
+.hero-section {
+  background: linear-gradient(135deg, var(--soft-midnight) 0%, var(--deep-night) 100%);
+  border-radius: 24px;
+  padding: 40px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(252, 211, 77, 0.1);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(252, 211, 77, 0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Streak badge - firefly themed */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--firefly-glow), var(--ember-accent));
+  color: var(--deep-night);
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(252, 211, 77, 0.3);
+}
+
+/* Pattern indicator */
+.pattern-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pattern-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--firefly-glow);
+  animation: fireflyPulse 2s infinite;
+}
+
+/* Achievement badge */
+.achievement-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--soft-midnight);
+  border: 1px solid rgba(252, 211, 77, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.achievement-badge:hover {
+  transform: scale(1.05);
+  border-color: var(--firefly-glow);
+  box-shadow: 0 0 20px rgba(252, 211, 77, 0.3);
+}
+
+.achievement-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+/* Dark theme body */
+body {
+  background-color: var(--deep-night) !important;
+  color: var(--neutral-text);
+}
+
+/* Ant Design overrides for dark theme */
+.ant-layout {
+  background: var(--deep-night) !important;
+}
+
+.ant-layout-content {
+  background: var(--deep-night) !important;
+}
+
+.ant-card {
+  background: var(--soft-midnight) !important;
+  border: 1px solid rgba(252, 211, 77, 0.1) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-card-head {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(252, 211, 77, 0.1) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-card-head-title {
+  color: var(--neutral-text) !important;
+}
+
+.ant-typography {
+  color: var(--neutral-text) !important;
+}
+
+.ant-typography.ant-typography-secondary {
+  color: var(--neutral-text-dim) !important;
+}
+
+.ant-statistic-title {
+  color: var(--neutral-text-dim) !important;
+}
+
+.ant-statistic-content {
+  color: var(--neutral-text) !important;
+}
+
+.ant-alert {
+  background: var(--soft-midnight) !important;
+  border: 1px solid rgba(252, 211, 77, 0.2) !important;
+}
+
+.ant-alert-message {
+  color: var(--neutral-text) !important;
+}
+
+.ant-input, .ant-input-affix-wrapper {
+  background: var(--surface-light) !important;
+  border-color: rgba(252, 211, 77, 0.2) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-input::placeholder {
+  color: var(--neutral-text-dim) !important;
+}
+
+.ant-select-selector {
+  background: var(--surface-light) !important;
+  border-color: rgba(252, 211, 77, 0.2) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-table {
+  background: var(--soft-midnight) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-table-thead > tr > th {
+  background: var(--deep-night) !important;
+  color: var(--neutral-text) !important;
+  border-bottom: 1px solid rgba(252, 211, 77, 0.1) !important;
+}
+
+.ant-table-tbody > tr > td {
+  border-bottom: 1px solid rgba(252, 211, 77, 0.05) !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background: var(--surface-light) !important;
+}
+
+.ant-divider {
+  border-color: rgba(252, 211, 77, 0.1) !important;
+}
+
+.ant-steps-item-title {
+  color: var(--neutral-text) !important;
+}
+
+.ant-steps-item-finish .ant-steps-item-icon {
+  background: var(--calming-teal) !important;
+  border-color: var(--calming-teal) !important;
+}
+
+.ant-steps-item-process .ant-steps-item-icon {
+  background: var(--firefly-glow) !important;
+  border-color: var(--firefly-glow) !important;
+  color: var(--deep-night) !important;
+}
+
+.ant-progress-text {
+  color: var(--neutral-text) !important;
+}
+
+.ant-tag {
+  background: var(--surface-light) !important;
+  border: 1px solid rgba(252, 211, 77, 0.2) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-collapse {
+  background: var(--soft-midnight) !important;
+  border-color: rgba(252, 211, 77, 0.1) !important;
+}
+
+.ant-collapse-header {
+  color: var(--neutral-text) !important;
+}
+
+.ant-collapse-content {
+  background: var(--deep-night) !important;
+  border-color: rgba(252, 211, 77, 0.1) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-list-item {
+  border-color: rgba(252, 211, 77, 0.05) !important;
+}
+
+.ant-timeline-item-content {
+  color: var(--neutral-text) !important;
+}
+
+/* Modal dark theme */
+.ant-modal-content {
+  background: var(--soft-midnight) !important;
+  border: 1px solid rgba(74, 222, 183, 0.2) !important;
+}
+
+.ant-modal-header {
+  background: var(--soft-midnight) !important;
+  border-bottom: 1px solid rgba(74, 222, 183, 0.2) !important;
+}
+
+.ant-modal-title {
+  color: var(--neutral-text) !important;
+}
+
+.ant-modal-body {
+  background: var(--soft-midnight) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-modal-footer {
+  background: var(--soft-midnight) !important;
+  border-top: 1px solid rgba(74, 222, 183, 0.2) !important;
+}
+
+.ant-modal-close {
+  color: var(--neutral-text) !important;
+}
+
+.ant-modal-close:hover {
+  color: var(--calming-teal) !important;
+}
+
+.ant-btn-default {
+  background: var(--surface-light) !important;
+  border-color: rgba(74, 222, 183, 0.3) !important;
+  color: var(--neutral-text) !important;
+}
+
+.ant-btn-default:hover {
+  border-color: var(--calming-teal) !important;
+  color: var(--calming-teal) !important;
+}
+
+/* Zero rating stars with white border */
+.zero-rating .ant-rate-star {
+  color: transparent !important;
+}
+
+.zero-rating .ant-rate-star svg {
+  stroke: #FFFFFF;
+  stroke-width: 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 24px;
+  }
+
+  .stat-card {
+    margin-bottom: 12px;
+  }
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--firefly-glow);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+button,
+a,
+.ant-card,
+.ant-tag {
+  transition: all 0.2s ease;
+}

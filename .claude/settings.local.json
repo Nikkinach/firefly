@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version:*)",
+      "Bash(psql:*)",
+      "Bash(redis-server:*)",
+      "Bash(npm --version:*)",
+      "WebSearch",
+      "Bash(powershell -Command \"[System.Environment]::GetEnvironmentVariable(''ANTHROPIC_API_KEY'', ''User'')\")",
+      "Bash(dir /b \"C:\\users\\nikki\\firefly\" 2)",
+      "Bash(nul)",
+      "Bash(powershell -Command \"cd ''C:\\users\\nikki\\firefly\\backend''; .\\venv\\Scripts\\pip.exe install PyJWT passlib[bcrypt] cryptography\")",
+      "Bash(powershell -Command \"Get-Content ''C:\\users\\nikki\\firefly\\frontend\\src\\types\\index.ts'' | Select-Object -First 5\")",
+      "Bash(powershell -Command \"cd ''C:\\users\\nikki\\firefly\\backend''; .\\venv\\Scripts\\pip.exe install email-validator\")",
+      "Bash(powershell -Command:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
