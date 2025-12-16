@@ -11,11 +11,25 @@ import pandas as pd
 from scipy import stats
 from scipy.fft import fft
 from sklearn.preprocessing import MinMaxScaler
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
-import torch
-from transformers import TimeSeriesTransformerForPrediction, TimeSeriesTransformerConfig
+
+# Make TensorFlow optional (not compatible with Python 3.14+)
+try:
+    import tensorflow as tf
+    from tensorflow import keras
+    from tensorflow.keras import layers
+    HAS_TENSORFLOW = True
+except ImportError:
+    HAS_TENSORFLOW = False
+    keras = None
+    tf = None
+
+# Make TimeSeriesTransformer optional
+try:
+    import torch
+    from transformers import TimeSeriesTransformerForPrediction, TimeSeriesTransformerConfig
+    HAS_TRANSFORMERS = True
+except ImportError:
+    HAS_TRANSFORMERS = False
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +45,7 @@ class PredictionService:
         self.is_lstm_trained = False
         self.is_transformer_trained = False
 
-    def build_lstm_model(self, sequence_length: int = 14, n_features: int = 5) -> keras.Model:
+    def build_lstm_model(self, sequence_length: int = 14, n_features: int = 5):
         """
         Build LSTM model for mood forecasting
 
@@ -42,6 +56,10 @@ class PredictionService:
         Returns:
             Compiled LSTM model
         """
+        if not HAS_TENSORFLOW:
+            logger.error("TensorFlow not available. Install with: pip install tensorflow")
+            return None
+
         model = keras.Sequential([
             # First LSTM layer with return sequences
             layers.LSTM(

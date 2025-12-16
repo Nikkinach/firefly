@@ -46,6 +46,13 @@ export const InterventionsPage = () => {
   const [approachFilter, setApproachFilter] = useState<string | undefined>(undefined);
   const [selectedIntervention, setSelectedIntervention] = useState<Intervention | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [exerciseActive, setExerciseActive] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(null);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [exerciseRating, setExerciseRating] = useState(0);
+  const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
     const fetchInterventions = async () => {
@@ -171,6 +178,70 @@ export const InterventionsPage = () => {
   const handleCardClick = (intervention: Intervention) => {
     setSelectedIntervention(intervention);
     setModalVisible(true);
+  };
+
+  const handleStartExercise = async (intervention: Intervention) => {
+    try {
+      const session = await api.startSession({
+        intervention_id: intervention.id,
+        started_at: new Date().toISOString(),
+        context_emotion: 'current',
+      });
+
+      setSessionId(session.id);
+      setSelectedIntervention(intervention);
+      setExerciseActive(true);
+      setModalVisible(false);
+      setTimeRemaining(intervention.duration_seconds);
+
+      const interval = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            setExerciseActive(false);
+            setShowRatingModal(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      setTimerInterval(interval);
+    } catch (err) {
+      console.error('Failed to start exercise:', err);
+    }
+  };
+
+  const handleCompleteExercise = async () => {
+    if (!sessionId) return;
+
+    try {
+      await api.completeSession(sessionId, {
+        completed_at: new Date().toISOString(),
+        was_completed: true,
+        effectiveness_rating: exerciseRating,
+        feedback_text: feedback || undefined,
+      });
+
+      setShowRatingModal(false);
+      setExerciseRating(0);
+      setFeedback('');
+      setSessionId(null);
+
+      // Refresh interventions to update usage stats
+      const data = await api.getInterventions();
+      setInterventions(data);
+    } catch (err) {
+      console.error('Failed to complete exercise:', err);
+    }
+  };
+
+  const handleStopExercise = () => {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      setTimerInterval(null);
+    }
+    setExerciseActive(false);
+    setShowRatingModal(true);
   };
 
   if (isLoading) {
@@ -499,6 +570,12 @@ export const InterventionsPage = () => {
               key="start"
               type="primary"
               style={{ backgroundColor: '#4ADEB7', borderColor: '#4ADEB7', color: '#0A0F29' }}
+              icon={<CheckCircleOutlined />}
+              onClick={() => {
+                if (selectedIntervention) {
+                  handleStartExercise(selectedIntervention);
+                }
+              }}
             >
               Start Exercise
             </Button>,
@@ -680,6 +757,116 @@ export const InterventionsPage = () => {
               )}
             </div>
           )}
+        </Modal>
+
+        {/* Active Exercise Modal */}
+        <Modal
+          title="Exercise in Progress"
+          open={exerciseActive}
+          onCancel={handleStopExercise}
+          footer={[
+            <Button key="stop" onClick={handleStopExercise}>
+              Stop Early
+            </Button>,
+            <Button
+              key="done"
+              type="primary"
+              style={{ backgroundColor: '#4ADEB7', borderColor: '#4ADEB7', color: '#0A0F29' }}
+              onClick={() => {
+                if (timerInterval) clearInterval(timerInterval);
+                setExerciseActive(false);
+                setShowRatingModal(true);
+              }}
+            >
+              I'm Done
+            </Button>,
+          ]}
+          width={600}
+          closable={false}
+        >
+          {selectedIntervention && (
+            <div style={{ textAlign: 'center', padding: '24px 0' }}>
+              <Title level={3} style={{ color: '#FFFFFF', marginBottom: 24 }}>
+                {selectedIntervention.name}
+              </Title>
+
+              <div style={{ margin: '32px 0' }}>
+                <div style={{ fontSize: 64, fontWeight: 700, color: '#4ADEB7', marginBottom: 8 }}>
+                  {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
+                </div>
+                <Text style={{ color: '#9CA3AF', fontSize: 16 }}>Time Remaining</Text>
+              </div>
+
+              <div
+                style={{
+                  background: 'rgba(74, 222, 183, 0.1)',
+                  border: '1px solid rgba(74, 222, 183, 0.3)',
+                  borderRadius: 12,
+                  padding: 16,
+                  marginTop: 24,
+                }}
+              >
+                <Paragraph style={{ color: '#D1D5DB', fontSize: 15, marginBottom: 0 }}>
+                  {selectedIntervention.short_description}
+                </Paragraph>
+              </div>
+            </div>
+          )}
+        </Modal>
+
+        {/* Rating Modal */}
+        <Modal
+          title="How Did That Feel?"
+          open={showRatingModal}
+          onOk={handleCompleteExercise}
+          onCancel={() => {
+            setShowRatingModal(false);
+            setExerciseRating(0);
+            setFeedback('');
+          }}
+          okText="Submit Feedback"
+          okButtonProps={{
+            style: { backgroundColor: '#4ADEB7', borderColor: '#4ADEB7', color: '#0A0F29' },
+            disabled: exerciseRating === 0
+          }}
+          width={500}
+        >
+          <div style={{ padding: '16px 0' }}>
+            <div style={{ textAlign: 'center', marginBottom: 24 }}>
+              <Text style={{ color: '#D1D5DB', fontSize: 16, display: 'block', marginBottom: 16 }}>
+                Rate this exercise:
+              </Text>
+              <Rate
+                value={exerciseRating}
+                onChange={setExerciseRating}
+                style={{ fontSize: 36, color: '#FCD34D' }}
+                tooltips={['Not helpful', 'Slightly helpful', 'Neutral', 'Helpful', 'Very helpful']}
+              />
+              {exerciseRating > 0 && (
+                <Text style={{ display: 'block', marginTop: 8, color: '#4ADEB7', fontSize: 14 }}>
+                  {['Not helpful', 'Slightly helpful', 'Neutral', 'Helpful', 'Very helpful'][exerciseRating - 1]}
+                </Text>
+              )}
+            </div>
+
+            <div>
+              <Text style={{ color: '#D1D5DB', fontSize: 14, display: 'block', marginBottom: 8 }}>
+                Any additional thoughts? (optional)
+              </Text>
+              <Input.TextArea
+                rows={4}
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+                placeholder="How did this exercise help you? Any suggestions for improvement?"
+                style={{
+                  background: 'rgba(28, 35, 64, 0.5)',
+                  border: '1px solid rgba(74, 222, 183, 0.2)',
+                  color: '#FFFFFF',
+                  borderRadius: 8,
+                }}
+              />
+            </div>
+          </div>
         </Modal>
       </div>
     </MainLayout>

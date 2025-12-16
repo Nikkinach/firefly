@@ -106,8 +106,8 @@ class CorrelationAnalysis(Base):
     """Stores correlation analysis results"""
     __tablename__ = "correlation_analyses"
 
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
 
     analysis_type = Column(String)  # weather, sleep, exercise, etc.
     correlation_data = Column(JSON)  # Detailed correlation results
@@ -130,15 +130,15 @@ class UserProfile(Base):
     """Anonymized user profiles for collaborative filtering"""
     __tablename__ = "user_profiles"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     profile_id = Column(String, unique=True, index=True)  # Anonymized hash
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, unique=True)
 
     # Feature vector (anonymized behavioral patterns)
     features = Column(JSON, nullable=False)
 
     # Clustering
-    cluster_id = Column(Integer, nullable=True)
+    cluster_id = Column(UUID(as_uuid=True), nullable=True)
     cluster_updated_at = Column(DateTime(timezone=True), nullable=True)
 
     # Metadata
@@ -151,7 +151,7 @@ class InterventionEffectiveness(Base):
     """Records intervention effectiveness for users"""
     __tablename__ = "intervention_effectiveness"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     profile_id = Column(String, ForeignKey("user_profiles.profile_id"), nullable=False)
     intervention_id = Column(String, nullable=False)
 
@@ -173,7 +173,7 @@ class ABTest(Base):
     """A/B test configurations"""
     __tablename__ = "ab_tests"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     test_id = Column(String, unique=True, index=True)
     name = Column(String, nullable=False)
 
@@ -196,7 +196,7 @@ class ABTestAssignment(Base):
     """User assignments to A/B test variants"""
     __tablename__ = "ab_test_assignments"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     test_id = Column(String, ForeignKey("ab_tests.test_id"), nullable=False)
     profile_id = Column(String, ForeignKey("user_profiles.profile_id"), nullable=False)
 
@@ -208,9 +208,9 @@ class ABTestResult(Base):
     """Individual results from A/B tests"""
     __tablename__ = "ab_test_results"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     test_id = Column(String, ForeignKey("ab_tests.test_id"), nullable=False)
-    assignment_id = Column(Integer, ForeignKey("ab_test_assignments.id"), nullable=False)
+    assignment_id = Column(UUID(as_uuid=True), ForeignKey("ab_test_assignments.id"), nullable=False)
 
     metric_value = Column(Float, nullable=False)
     recorded_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -220,7 +220,7 @@ class MLModelVersion(Base):
     """Track ML model versions and performance"""
     __tablename__ = "ml_model_versions"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
     model_type = Column(String, nullable=False)  # lstm, transformer, etc.
     version = Column(String, nullable=False)
 

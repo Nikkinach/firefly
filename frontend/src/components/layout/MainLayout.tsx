@@ -10,6 +10,7 @@ import {
   SafetyOutlined,
   BulbOutlined,
   BarChartOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
@@ -37,6 +38,11 @@ export const MainLayout = ({ children }: Props) => {
       key: '/checkin',
       icon: <HeartOutlined style={{ fontSize: 16 }} />,
       label: 'Check-in',
+    },
+    {
+      key: '/journal',
+      icon: <BookOutlined style={{ fontSize: 16 }} />,
+      label: 'Journal',
     },
     {
       key: '/insights',

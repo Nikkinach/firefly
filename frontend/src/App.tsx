@@ -10,6 +10,7 @@ import { OnboardingPage } from './pages/OnboardingPage';
 import { InsightsPage } from './pages/InsightsPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { JournalPage } from './pages/JournalPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 
 const theme = {
@@ -94,6 +95,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/journal"
+            element={
+              <ProtectedRoute>
+                <JournalPage />
               </ProtectedRoute>
             }
           />
